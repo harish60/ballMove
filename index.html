@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving Balls</title>
+</head>
+<body>
+    <script>
+        var xposition = [];
+        var yposition = [];
+        var xvelocity = [];
+        var yvelocity = [];
+        var ball = [];
+
+        function create() {
+            var div = document.createElement('div');
+            let color = randomColor();            let x = randomx();
+    let y = randomy();
+            let vx = randomVelocity();
+        let vy = randomVelocity();
+
+            xposition.push(x);
+yposition.push(y);            xvelocity.push(vx);
+            yvelocity.push(vy);
+
+            div.style.zIndex = '1';
+            div.style.position = 'absolute';
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
+            div.style.height = '50px';
+            div.style.width = '50px';
+            div.style.background = color;
+            div.style.borderRadius = '50px';
+
+            document.body.appendChild(div);
+            return div;
+        }
+
+        function randomColor() {
+            let palet = ["green", "red", "yellow", "brown", "blue", "orange", "pink"];
+            let color = palet[Math.floor(Math.random() * palet.length)];
+            return color;
+        }
+
+        function randomx() {
+            return Math.random() * (window.innerWidth - 50); // Ensure it stays within the window
+        }
+
+        function randomy() {
+            return Math.random() * (window.innerHeight - 50); // Ensure it stays within the window
+        }
+
+        function randomVelocity() {
+            return (Math.random() - 0.5) * 10; // Random velocity between -5 and 5
+        }
+
+        // Create 3 balls
+        for (let i = 0; i < 3; i++) {
+            ball.push(create());
+        }
+
+        function moveBalls() {
+            for (let i = 0; i < ball.length; i++) {
+                // Update positions
+                xposition[i] += xvelocity[i];
+                yposition[i] += yvelocity[i];
+
+                // Bounce off walls
+                if (xposition[i] + 50 > window.innerWidth || xposition[i] < 0) {
+                    xvelocity[i] = -xvelocity[i];
+                }      if (yposition[i] + 50 > window.innerHeight || yposition[i] < 0) {
+                    yvelocity[i] = -yvelocity[i];
+                }
+
+                // Apply new positions
+                ball[i].style.left = xposition[i] + 'px';
+                ball[i].style.top = yposition[i] + 'px';
+            }
+        }
+
+        // Move the balls every 50 milliseconds using setInterval
+        setInterval(moveBalls, 50);
+    </script>
+</body>
+</html>
